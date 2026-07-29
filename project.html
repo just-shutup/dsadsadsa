@@ -1,0 +1,1272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Akuma.best - Stiller Builder</title>
+    <style>
+        /* ============================================
+           RESET & BASE
+        ============================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap');
+
+        body {
+            font-family: 'Rajdhani', 'Orbitron', sans-serif;
+            min-height: 100vh;
+            background: #0a0000;
+            overflow-x: hidden;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* ============================================
+           NEON BACKGROUND
+        ============================================ */
+        .bg-neon {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at center, #1a0000 0%, #0a0000 70%, #000 100%);
+            z-index: 0;
+            animation: pulse 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes pulse {
+            0% {
+                background: radial-gradient(ellipse at center, #1a0000 0%, #0a0000 70%, #000 100%);
+                box-shadow: inset 0 0 100px rgba(255, 0, 0, 0.08);
+            }
+            100% {
+                background: radial-gradient(ellipse at center, #2a0505 0%, #0a0000 70%, #000 100%);
+                box-shadow: inset 0 0 150px rgba(255, 0, 0, 0.18);
+            }
+        }
+
+        /* ============================================
+           SNOW
+        ============================================ */
+        #snowCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .blood-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            background: radial-gradient(ellipse at 50% 50%, rgba(255, 0, 0, 0.06) 0%, transparent 70%);
+        }
+
+        .container {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            max-width: 500px;
+            padding: 20px;
+        }
+
+        /* ============================================
+           LOGO — SUPER BRIGHT
+        ============================================ */
+        .logo-wrapper {
+            text-align: center;
+            margin-bottom: 30px;
+            min-height: 70px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #akumaText {
+            font-size: 3.2rem;
+            font-weight: 900;
+            font-family: 'Orbitron', sans-serif;
+            color: #ff0000;
+            text-shadow:
+                0 0 30px rgba(255, 0, 0, 1),
+                0 0 60px rgba(255, 0, 0, 0.9),
+                0 0 90px rgba(255, 0, 0, 0.7),
+                0 0 120px rgba(255, 0, 0, 0.5),
+                0 0 150px rgba(255, 0, 0, 0.3);
+            letter-spacing: 8px;
+            min-height: 55px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #akumaText .cursor {
+            display: inline-block;
+            width: 3px;
+            height: 1.2em;
+            background: #ff0000;
+            margin-left: 3px;
+            animation: blink 0.7s step-end infinite;
+            opacity: 1;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.8);
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        .logo-sub {
+            text-align: center;
+            color: rgba(255, 100, 100, 0.5);
+            font-size: 0.75rem;
+            letter-spacing: 10px;
+            margin-top: 2px;
+            font-weight: 400;
+            font-family: 'Rajdhani', sans-serif;
+            text-shadow: 0 0 15px rgba(255, 0, 0, 0.2);
+        }
+
+        /* ============================================
+           AUTH FORM
+        ============================================ */
+        .auth-box {
+            background: linear-gradient(145deg, rgba(15, 0, 0, 0.85), rgba(8, 0, 0, 0.9));
+            border: 1px solid rgba(255, 0, 0, 0.15);
+            border-radius: 16px;
+            padding: 35px 30px 30px;
+            box-shadow: 0 0 50px rgba(255, 0, 0, 0.05);
+            backdrop-filter: blur(4px);
+        }
+
+        .auth-box .tabs {
+            display: flex;
+            gap: 0;
+            margin-bottom: 25px;
+            border-bottom: 1px solid rgba(255, 0, 0, 0.08);
+        }
+
+        .auth-box .tabs button {
+            flex: 1;
+            background: none;
+            border: none;
+            padding: 12px 10px 14px;
+            color: rgba(255, 80, 80, 0.3);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.7rem;
+            letter-spacing: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            border-bottom: 2px solid transparent;
+        }
+
+        .auth-box .tabs button.active {
+            color: rgba(255, 100, 100, 0.9);
+            border-bottom-color: rgba(255, 0, 0, 0.4);
+            text-shadow: 0 0 20px rgba(255, 0, 0, 0.2);
+        }
+
+        .auth-box .tabs button:hover {
+            color: rgba(255, 100, 100, 0.6);
+        }
+
+        .auth-box .form-group {
+            margin-bottom: 20px;
+        }
+
+        .auth-box .form-group label {
+            display: block;
+            color: rgba(255, 80, 80, 0.9);
+            font-size: 0.7rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            font-family: 'Orbitron', sans-serif;
+            text-shadow: 0 0 25px rgba(255, 0, 0, 0.3);
+        }
+
+        .auth-box .form-group input {
+            width: 100%;
+            padding: 14px 18px;
+            background: rgba(20, 0, 0, 0.6);
+            border: 2px solid rgba(255, 0, 0, 0.2);
+            border-radius: 10px;
+            color: rgba(255, 220, 220, 0.95);
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            outline: none;
+            transition: all 0.3s ease;
+            letter-spacing: 2px;
+            box-shadow: 0 0 30px rgba(255, 0, 0, 0.05);
+        }
+
+        .auth-box .form-group input:focus {
+            border-color: rgba(255, 0, 0, 0.5);
+            box-shadow: 0 0 40px rgba(255, 0, 0, 0.15);
+            background: rgba(30, 0, 0, 0.7);
+        }
+
+        .auth-box .form-group input::placeholder {
+            color: rgba(255, 100, 100, 0.3);
+            letter-spacing: 3px;
+            font-size: 0.9rem;
+            font-weight: 400;
+        }
+
+        .auth-box .btn-submit {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, rgba(180, 0, 0, 0.6), rgba(100, 0, 0, 0.6));
+            border: 1px solid rgba(255, 0, 0, 0.15);
+            border-radius: 8px;
+            color: rgba(255, 200, 200, 0.6);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.75rem;
+            letter-spacing: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            margin-top: 6px;
+        }
+
+        .auth-box .btn-submit:hover {
+            background: linear-gradient(135deg, rgba(200, 0, 0, 0.7), rgba(130, 0, 0, 0.7));
+            border-color: rgba(255, 0, 0, 0.25);
+            color: rgba(255, 200, 200, 0.8);
+            box-shadow: 0 0 40px rgba(255, 0, 0, 0.08);
+        }
+
+        .auth-box .switch-text {
+            text-align: center;
+            margin-top: 18px;
+            color: rgba(255, 80, 80, 0.15);
+            font-size: 0.6rem;
+            letter-spacing: 2px;
+        }
+
+        .auth-box .switch-text span {
+            color: rgba(255, 100, 100, 0.3);
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .auth-box .switch-text span:hover {
+            color: rgba(255, 100, 100, 0.5);
+        }
+
+        .auth-box .error-msg {
+            color: rgba(255, 50, 50, 0.6);
+            font-size: 0.65rem;
+            text-align: center;
+            margin-top: 12px;
+            letter-spacing: 1px;
+            min-height: 20px;
+            font-family: 'Rajdhani', sans-serif;
+        }
+
+        /* ============================================
+           LOADING
+        ============================================ */
+        .loading-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 0, 0, 0.85);
+            z-index: 999;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            gap: 20px;
+            backdrop-filter: blur(8px);
+        }
+
+        .loading-overlay.active {
+            display: flex;
+        }
+
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 3px solid rgba(255, 0, 0, 0.1);
+            border-top: 3px solid #ff0000;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            box-shadow: 0 0 40px rgba(255, 0, 0, 0.2);
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            color: rgba(255, 100, 100, 0.7);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.8rem;
+            letter-spacing: 6px;
+            animation: loadPulse 1.2s ease-in-out infinite;
+            text-shadow: 0 0 20px rgba(255, 0, 0, 0.2);
+        }
+
+        @keyframes loadPulse {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        /* ============================================
+           MAIN PAGE
+        ============================================ */
+        #mainPage {
+            display: none;
+        }
+
+        /* ============================================
+           NAVIGATION TABS
+        ============================================ */
+        .nav-tabs {
+            display: flex;
+            gap: 2px;
+            margin-bottom: 25px;
+            border-bottom: 1px solid rgba(255, 0, 0, 0.06);
+            padding-bottom: 2px;
+            flex-wrap: wrap;
+        }
+
+        .nav-tabs button {
+            flex: 1;
+            min-width: 70px;
+            background: none;
+            border: none;
+            padding: 10px 8px 12px;
+            color: rgba(255, 80, 80, 0.2);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.55rem;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            border-bottom: 2px solid transparent;
+            position: relative;
+        }
+
+        .nav-tabs button.active {
+            color: rgba(255, 100, 100, 0.8);
+            border-bottom-color: rgba(255, 0, 0, 0.3);
+            text-shadow: 0 0 15px rgba(255, 0, 0, 0.1);
+        }
+
+        .nav-tabs button:hover {
+            color: rgba(255, 100, 100, 0.5);
+        }
+
+        /* ============================================
+           TAB CONTENT
+        ============================================ */
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(8px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ============================================
+           PROFILE — АВАТАР ПО ЦЕНТРУ (БЕЗ КНОПКИ)
+        ============================================ */
+        .profile-info {
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        .profile-avatar-wrapper {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+
+        .profile-avatar-wrapper .avatar-preview {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 2px solid rgba(255, 0, 0, 0.2);
+            object-fit: cover;
+            background: rgba(20, 0, 0, 0.6);
+            transition: all 0.3s ease;
+            display: block;
+        }
+
+        .profile-avatar-wrapper .avatar-preview:hover {
+            border-color: rgba(255, 0, 0, 0.4);
+            box-shadow: 0 0 40px rgba(255, 0, 0, 0.1);
+        }
+
+        /* Скрываем input */
+        #avatarInput {
+            display: none !important;
+        }
+
+        .profile-info .username {
+            color: rgba(255, 180, 180, 0.8);
+            font-size: 1.2rem;
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 4px;
+            text-shadow: 0 0 20px rgba(255, 0, 0, 0.1);
+            margin-bottom: 6px;
+        }
+
+        .profile-info .status {
+            color: rgba(255, 80, 80, 0.25);
+            font-size: 0.55rem;
+            letter-spacing: 4px;
+            font-family: 'Orbitron', sans-serif;
+            text-transform: uppercase;
+        }
+
+        .profile-info .status .highlight {
+            color: rgba(255, 80, 80, 0.4);
+        }
+
+        .profile-info .divider {
+            border: none;
+            border-top: 1px solid rgba(255, 0, 0, 0.05);
+            margin: 18px 0;
+        }
+
+        .profile-info .stat-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            color: rgba(255, 80, 80, 0.2);
+            font-size: 0.6rem;
+            letter-spacing: 3px;
+            font-family: 'Orbitron', sans-serif;
+            text-transform: uppercase;
+        }
+
+        .profile-info .stat-item span:last-child {
+            color: rgba(255, 100, 100, 0.3);
+        }
+
+        .profile-info .stat-item .inactive {
+            color: rgba(255, 80, 80, 0.15);
+        }
+
+        .profile-info .subscribe-btn {
+            margin-top: 18px;
+            padding: 12px 40px;
+            background: linear-gradient(135deg, rgba(160, 0, 0, 0.3), rgba(100, 0, 0, 0.3));
+            border: 1px solid rgba(255, 0, 0, 0.08);
+            border-radius: 8px;
+            color: rgba(255, 200, 200, 0.25);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.55rem;
+            letter-spacing: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+        }
+
+        .profile-info .subscribe-btn:hover {
+            background: linear-gradient(135deg, rgba(180, 0, 0, 0.4), rgba(120, 0, 0, 0.4));
+            border-color: rgba(255, 0, 0, 0.12);
+            color: rgba(255, 200, 200, 0.4);
+        }
+
+        /* ============================================
+           ABOUT
+        ============================================ */
+        .about-text {
+            color: rgba(255, 180, 180, 0.4);
+            font-size: 0.8rem;
+            line-height: 1.8;
+            text-align: center;
+            padding: 15px 5px;
+            letter-spacing: 1px;
+        }
+
+        .about-text strong {
+            color: rgba(255, 100, 100, 0.7);
+            text-shadow: 0 0 20px rgba(255, 0, 0, 0.1);
+        }
+
+        .about-features {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-top: 15px;
+        }
+
+        .about-features .feature {
+            background: rgba(20, 0, 0, 0.3);
+            border: 1px solid rgba(255, 0, 0, 0.05);
+            border-radius: 8px;
+            padding: 12px 10px;
+            text-align: center;
+            color: rgba(255, 150, 150, 0.3);
+            font-size: 0.55rem;
+            letter-spacing: 2px;
+            font-family: 'Orbitron', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .about-features .feature:hover {
+            border-color: rgba(255, 0, 0, 0.1);
+            color: rgba(255, 150, 150, 0.5);
+        }
+
+        /* ============================================
+           BUY
+        ============================================ */
+        .pricing {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .pricing-card {
+            background: linear-gradient(145deg, rgba(20, 0, 0, 0.8), rgba(10, 0, 0, 0.85));
+            border: 1px solid rgba(255, 0, 0, 0.1);
+            border-radius: 12px;
+            padding: 18px 22px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .pricing-card:hover {
+            border-color: rgba(255, 0, 0, 0.2);
+            transform: translateX(4px);
+        }
+
+        .pricing-card .plan-info .name {
+            font-family: 'Orbitron', sans-serif;
+            color: rgba(255, 100, 100, 0.5);
+            font-size: 0.6rem;
+            letter-spacing: 4px;
+            font-weight: 700;
+        }
+
+        .pricing-card .plan-info .price {
+            font-family: 'Orbitron', sans-serif;
+            color: #ff0000;
+            font-size: 1.5rem;
+            font-weight: 900;
+            text-shadow: 0 0 30px rgba(255, 0, 0, 0.3);
+            letter-spacing: 2px;
+        }
+
+        .pricing-card .plan-info .price small {
+            font-size: 0.65rem;
+            color: rgba(255, 80, 80, 0.25);
+            font-weight: 400;
+        }
+
+        .pricing-card .btn-buy {
+            padding: 10px 24px;
+            background: linear-gradient(135deg, rgba(160, 0, 0, 0.4), rgba(100, 0, 0, 0.4));
+            border: 1px solid rgba(255, 0, 0, 0.1);
+            border-radius: 8px;
+            color: rgba(255, 200, 200, 0.3);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.55rem;
+            letter-spacing: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+        }
+
+        .pricing-card .btn-buy:hover {
+            background: linear-gradient(135deg, rgba(180, 0, 0, 0.5), rgba(120, 0, 0, 0.5));
+            border-color: rgba(255, 0, 0, 0.15);
+            color: rgba(255, 200, 200, 0.5);
+        }
+
+        .pricing-card.popular {
+            border-color: rgba(255, 0, 0, 0.15);
+        }
+
+        .pricing-card.popular .plan-info .name {
+            color: rgba(255, 100, 100, 0.6);
+        }
+
+        .pricing-card.popular .plan-info .price {
+            color: #ff3333;
+            text-shadow: 0 0 35px rgba(255, 0, 0, 0.4);
+        }
+
+        /* ============================================
+           DOWNLOAD
+        ============================================ */
+        .download-section {
+            text-align: center;
+            padding: 25px 0;
+        }
+
+        .download-section .icon {
+            font-size: 3.5rem;
+            color: rgba(255, 50, 50, 0.2);
+            margin-bottom: 15px;
+        }
+
+        .download-section .desc {
+            color: rgba(255, 180, 180, 0.3);
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+        }
+
+        .download-section .btn-download {
+            display: inline-block;
+            padding: 14px 50px;
+            background: linear-gradient(135deg, rgba(160, 0, 0, 0.5), rgba(100, 0, 0, 0.5));
+            border: 1px solid rgba(255, 0, 0, 0.12);
+            border-radius: 10px;
+            color: rgba(255, 200, 200, 0.4);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.7rem;
+            letter-spacing: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            text-decoration: none;
+        }
+
+        .download-section .btn-download:hover {
+            background: linear-gradient(135deg, rgba(180, 0, 0, 0.6), rgba(120, 0, 0, 0.6));
+            border-color: rgba(255, 0, 0, 0.15);
+            color: rgba(255, 200, 200, 0.6);
+            box-shadow: 0 0 40px rgba(255, 0, 0, 0.05);
+        }
+
+        .download-section .version {
+            color: rgba(255, 80, 80, 0.1);
+            font-size: 0.5rem;
+            letter-spacing: 3px;
+            margin-top: 12px;
+        }
+
+        /* ============================================
+           LOGOUT
+        ============================================ */
+        .logout-btn-top {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: 1px solid rgba(255, 0, 0, 0.06);
+            color: rgba(255, 80, 80, 0.15);
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.4rem;
+            letter-spacing: 3px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn-top:hover {
+            border-color: rgba(255, 0, 0, 0.12);
+            color: rgba(255, 80, 80, 0.3);
+        }
+
+        .footer-mini {
+            text-align: center;
+            padding: 20px 20px 5px;
+            color: rgba(255, 50, 50, 0.05);
+            font-size: 0.5rem;
+            letter-spacing: 3px;
+            margin-top: 10px;
+        }
+
+        /* ============================================
+           BLOOD DRIPS
+        ============================================ */
+        .blood-drip {
+            position: fixed;
+            width: 2px;
+            background: linear-gradient(180deg, rgba(255, 0, 0, 0.04), transparent);
+            z-index: 0;
+            pointer-events: none;
+            animation: drip 10s ease-in infinite;
+        }
+
+        @keyframes drip {
+            0% { height: 0; opacity: 1; }
+            100% { height: 150px; opacity: 0; }
+        }
+
+        /* ============================================
+           RESPONSIVE
+        ============================================ */
+        @media (max-width: 480px) {
+            #akumaText {
+                font-size: 2rem;
+                letter-spacing: 4px;
+            }
+            .auth-box {
+                padding: 25px 18px 22px;
+            }
+            .auth-box .tabs button {
+                font-size: 0.55rem;
+                letter-spacing: 2px;
+            }
+            .pricing-card {
+                flex-direction: column;
+                text-align: center;
+                gap: 10px;
+                padding: 16px 18px;
+            }
+            .pricing-card .plan-info .price {
+                font-size: 1.2rem;
+            }
+            .nav-tabs button {
+                font-size: 0.45rem;
+                letter-spacing: 1px;
+                min-width: 50px;
+                padding: 8px 4px 10px;
+            }
+            .about-features {
+                grid-template-columns: 1fr 1fr;
+                gap: 5px;
+            }
+            .about-features .feature {
+                font-size: 0.45rem;
+                padding: 8px 6px;
+            }
+            .container {
+                padding: 10px;
+            }
+            .logout-btn-top {
+                top: 5px;
+                right: 5px;
+                font-size: 0.35rem;
+                padding: 3px 10px;
+            }
+            .auth-box .form-group input {
+                font-size: 0.9rem;
+                padding: 12px 14px;
+            }
+            .auth-box .form-group label {
+                font-size: 0.6rem;
+            }
+            .profile-avatar-wrapper .avatar-preview {
+                width: 70px;
+                height: 70px;
+            }
+            .profile-info .username {
+                font-size: 1rem;
+            }
+            .profile-info .stat-item {
+                font-size: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- BACKGROUND -->
+    <div class="bg-neon"></div>
+    <div class="blood-overlay"></div>
+
+    <!-- BLOOD DRIPS -->
+    <div class="blood-drip" style="left:5%; animation-delay:0s;"></div>
+    <div class="blood-drip" style="left:15%; animation-delay:2s;"></div>
+    <div class="blood-drip" style="left:30%; animation-delay:4s;"></div>
+    <div class="blood-drip" style="left:50%; animation-delay:1s;"></div>
+    <div class="blood-drip" style="left:65%; animation-delay:3s;"></div>
+    <div class="blood-drip" style="left:80%; animation-delay:5s;"></div>
+    <div class="blood-drip" style="left:92%; animation-delay:1.5s;"></div>
+
+    <!-- SNOW -->
+    <canvas id="snowCanvas"></canvas>
+
+    <!-- LOADING -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="spinner"></div>
+        <div class="loading-text">LOADING...</div>
+    </div>
+
+    <!-- ==========================================
+    MAIN CONTAINER
+    ========================================== -->
+    <div class="container">
+
+        <!-- AUTH PAGE -->
+        <div id="authPage">
+
+            <div class="logo-wrapper">
+                <div id="akumaText"></div>
+            </div>
+            <div class="logo-sub">✦ stiller builder ✦</div>
+
+            <div class="auth-box">
+
+                <div class="tabs">
+                    <button class="active" data-tab="login" onclick="switchTab('login')">Login</button>
+                    <button data-tab="register" onclick="switchTab('register')">Register</button>
+                </div>
+
+                <!-- LOGIN -->
+                <div id="loginForm">
+                    <div class="form-group">
+                        <label>Username</label>
+                        <input type="text" id="loginUsername" placeholder="username" />
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" id="loginPassword" placeholder="••••••••" onkeydown="if(event.key==='Enter') handleLogin()" />
+                    </div>
+                    <button class="btn-submit" onclick="handleLogin()">Login</button>
+                    <div id="loginError" class="error-msg"></div>
+                    <div class="switch-text">
+                        No account? <span onclick="switchTab('register')">Sign up</span>
+                    </div>
+                </div>
+
+                <!-- REGISTER -->
+                <div id="registerForm" style="display:none;">
+                    <div class="form-group">
+                        <label>Username</label>
+                        <input type="text" id="regUsername" placeholder="username" />
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" id="regPassword" placeholder="••••••••" onkeydown="if(event.key==='Enter') handleRegister()" />
+                    </div>
+                    <button class="btn-submit" onclick="handleRegister()">Sign up</button>
+                    <div id="regError" class="error-msg"></div>
+                    <div class="switch-text">
+                        Already have an account? <span onclick="switchTab('login')">Login</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="footer-mini">AKUMA.BEST ● 2026</div>
+        </div>
+
+        <!-- ==========================================
+        MAIN PAGE
+        ========================================== -->
+        <div id="mainPage" style="position:relative;">
+
+            <button class="logout-btn-top" onclick="handleLogout()">✕ LOGOUT</button>
+
+            <div style="text-align:center; padding:10px 0 5px;">
+                <span style="font-family:'Orbitron',sans-serif; font-size:1.2rem; font-weight:900; color:#ff2222; text-shadow:0 0 25px rgba(255,0,0,0.5), 0 0 50px rgba(255,0,0,0.3); letter-spacing:4px;">akuma.best</span>
+            </div>
+
+            <!-- NAVIGATION -->
+            <div class="nav-tabs">
+                <button class="active" onclick="switchTabContent('profile')">Profile</button>
+                <button onclick="switchTabContent('about')">About</button>
+                <button onclick="switchTabContent('buy')">Buy</button>
+                <button onclick="switchTabContent('download')">Download</button>
+            </div>
+
+            <!-- ==========================================
+            PROFILE — АВАТАР ПО ЦЕНТРУ (БЕЗ КНОПКИ)
+            ========================================== -->
+            <div class="tab-content active" id="tab-profile">
+                <div class="profile-info">
+
+                    <!-- АВАТАР ПО ЦЕНТРУ -->
+                    <div class="profile-avatar-wrapper" onclick="document.getElementById('avatarInput').click()">
+                        <img class="avatar-preview" id="avatarPreview" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%231a0000'/%3E%3Ctext x='50' y='60' font-family='Orbitron' font-size='50' fill='%23330000' text-anchor='middle' font-weight='bold'%3E?%3C/text%3E%3C/svg%3E" alt="Avatar" />
+                    </div>
+
+                    <!-- СКРЫТЫЙ INPUT (ЗАГРУЗКА ПО КЛИКУ НА АВАТАР) -->
+                    <input type="file" id="avatarInput" accept="image/*" onchange="loadAvatar(event)" style="display:none;" />
+
+                    <div class="username" id="profileName">user</div>
+                    <div class="status">status: <span class="highlight">user</span> — subscription not activated</div>
+
+                    <hr class="divider" />
+
+                    <div class="stat-item"><span>subscription</span><span class="inactive">inactive</span></div>
+                    <div class="stat-item"><span>expires</span><span class="inactive">—</span></div>
+
+                    <button class="subscribe-btn" onclick="alert('Go to Buy tab to activate subscription')">activate subscription</button>
+
+                </div>
+            </div>
+
+            <!-- ABOUT -->
+            <div class="tab-content" id="tab-about">
+                <div class="about-text">
+                    <strong>Akuma Stiller Builder</strong> — next-generation steal tool.
+                    <br /><br />
+                    🔹 Full control over build<br />
+                    🔹 Anti-detect system<br />
+                    🔹 Auto-update<br />
+                    🔹 Anonymity & security
+                </div>
+                <div class="about-features">
+                    <div class="feature">stealth mode</div>
+                    <div class="feature">anti-debug</div>
+                    <div class="feature">cryptography</div>
+                    <div class="feature">av bypass</div>
+                </div>
+            </div>
+
+            <!-- BUY -->
+            <div class="tab-content" id="tab-buy">
+                <div class="pricing">
+                    <div class="pricing-card">
+                        <div class="plan-info">
+                            <div class="name">week</div>
+                            <div class="price">$20 <small>/ 7 days</small></div>
+                        </div>
+                        <button class="btn-buy" onclick="alert('Contact us: @akuma_support')">buy</button>
+                    </div>
+                    <div class="pricing-card popular">
+                        <div class="plan-info">
+                            <div class="name">month ★</div>
+                            <div class="price">$30 <small>/ 30 days</small></div>
+                        </div>
+                        <button class="btn-buy" onclick="alert('Contact us: @akuma_support')">buy</button>
+                    </div>
+                    <div class="pricing-card">
+                        <div class="plan-info">
+                            <div class="name">year</div>
+                            <div class="price">$50 <small>/ 365 days</small></div>
+                        </div>
+                        <button class="btn-buy" onclick="alert('Contact us: @akuma_support')">buy</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DOWNLOAD -->
+            <div class="tab-content" id="tab-download">
+                <div class="download-section">
+                    <div class="icon">⬇</div>
+                    <div class="desc">Download the official launcher for Akuma Stiller Builder</div>
+                    <a class="btn-download" onclick="alert('Download started...')">▼ download launcher</a>
+                    <div class="version">v2.1.0 ● 2026</div>
+                </div>
+            </div>
+
+            <div class="footer-mini">AKUMA.BEST ● 2026</div>
+        </div>
+
+    </div>
+
+    <!-- ==========================================
+    SCRIPTS
+    ========================================== -->
+
+    <!-- SNOW -->
+    <script>
+        const canvas = document.getElementById('snowCanvas');
+        const ctx = canvas.getContext('2d');
+
+        let width, height;
+        let snowflakes = [];
+
+        function resizeCanvas() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        const SNOW_COUNT = 120;
+
+        class Snowflake {
+            constructor() {
+                this.reset();
+                this.y = Math.random() * height;
+            }
+            reset() {
+                this.x = Math.random() * width;
+                this.y = -10;
+                this.radius = Math.random() * 2.5 + 1;
+                this.speed = Math.random() * 1.8 + 0.6;
+                this.wind = (Math.random() - 0.5) * 0.5;
+                this.opacity = Math.random() * 0.4 + 0.15;
+                this.swing = Math.random() * 0.015 + 0.005;
+                this.swingOffset = Math.random() * 100;
+            }
+            update() {
+                this.y += this.speed;
+                this.x += Math.sin(this.y * this.swing + this.swingOffset) * 0.4 + this.wind;
+                if (this.y > height + 10) this.reset();
+                if (this.x < -10) this.x = width + 10;
+                if (this.x > width + 10) this.x = -10;
+            }
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                const r = 200 + Math.random() * 55;
+                const g = 150 + Math.random() * 40;
+                const b = 150 + Math.random() * 40;
+                ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${this.opacity})`;
+                ctx.shadowColor = `rgba(255, 50, 50, ${this.opacity * 0.12})`;
+                ctx.shadowBlur = 8;
+                ctx.fill();
+                ctx.shadowBlur = 0;
+            }
+        }
+
+        for (let i = 0; i < SNOW_COUNT; i++) {
+            snowflakes.push(new Snowflake());
+        }
+
+        function animateSnow() {
+            ctx.clearRect(0, 0, width, height);
+            for (const flake of snowflakes) {
+                flake.update();
+                flake.draw();
+            }
+            requestAnimationFrame(animateSnow);
+        }
+        animateSnow();
+    </script>
+
+    <!-- TEXT ANIMATION -->
+    <script>
+        const textElement = document.getElementById('akumaText');
+        const fullText = 'akuma.best';
+        let charIndex = 0;
+        let isDeleting = false;
+
+        function typeText() {
+            if (!isDeleting) {
+                if (charIndex < fullText.length) {
+                    charIndex++;
+                    textElement.innerHTML = fullText.substring(0, charIndex) + '<span class="cursor"></span>';
+                    setTimeout(typeText, 120 + Math.random() * 60);
+                } else {
+                    textElement.innerHTML = fullText + '<span class="cursor"></span>';
+                    setTimeout(() => {
+                        isDeleting = true;
+                        setTimeout(typeText, 800);
+                    }, 1500);
+                }
+            } else {
+                if (charIndex > 0) {
+                    charIndex--;
+                    textElement.innerHTML = fullText.substring(0, charIndex) + '<span class="cursor"></span>';
+                    setTimeout(typeText, 60 + Math.random() * 40);
+                } else {
+                    textElement.innerHTML = '<span class="cursor"></span>';
+                    isDeleting = false;
+                    setTimeout(typeText, 600);
+                }
+            }
+        }
+
+        setTimeout(typeText, 500);
+    </script>
+
+    <!-- AVATAR UPLOAD -->
+    <script>
+        function loadAvatar(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('avatarPreview').src = e.target.result;
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+    </script>
+
+    <!-- AUTH -->
+    <script>
+        function getUsers() {
+            const data = localStorage.getItem('akuma_users');
+            if (data) {
+                try { return JSON.parse(data); } catch (e) { return {}; }
+            }
+            return {};
+        }
+
+        function saveUsers(users) {
+            localStorage.setItem('akuma_users', JSON.stringify(users));
+        }
+
+        function getCurrentUser() {
+            return localStorage.getItem('akuma_current_user') || null;
+        }
+
+        function setCurrentUser(username) {
+            if (username) {
+                localStorage.setItem('akuma_current_user', username);
+            } else {
+                localStorage.removeItem('akuma_current_user');
+            }
+        }
+
+        function showLoading(show) {
+            const overlay = document.getElementById('loadingOverlay');
+            if (show) {
+                overlay.classList.add('active');
+            } else {
+                overlay.classList.remove('active');
+            }
+        }
+
+        function checkAuth() {
+            const user = getCurrentUser();
+            const users = getUsers();
+            if (user && users[user]) {
+                showMainPage(user);
+                return true;
+            }
+            return false;
+        }
+
+        function showMainPage(username) {
+            document.getElementById('authPage').style.display = 'none';
+            document.getElementById('mainPage').style.display = 'block';
+            document.getElementById('profileName').textContent = username;
+            switchTabContent('profile');
+        }
+
+        function showAuthPage() {
+            document.getElementById('authPage').style.display = 'block';
+            document.getElementById('mainPage').style.display = 'none';
+        }
+
+        function switchTab(tab) {
+            const loginForm = document.getElementById('loginForm');
+            const registerForm = document.getElementById('registerForm');
+            const tabs = document.querySelectorAll('.tabs button');
+            tabs.forEach(btn => btn.classList.remove('active'));
+            if (tab === 'login') {
+                loginForm.style.display = 'block';
+                registerForm.style.display = 'none';
+                tabs[0].classList.add('active');
+                document.getElementById('loginError').textContent = '';
+            } else {
+                loginForm.style.display = 'none';
+                registerForm.style.display = 'block';
+                tabs[1].classList.add('active');
+                document.getElementById('regError').textContent = '';
+            }
+        }
+
+        function switchTabContent(tab) {
+            const contents = document.querySelectorAll('.tab-content');
+            const buttons = document.querySelectorAll('.nav-tabs button');
+            contents.forEach(c => c.classList.remove('active'));
+            buttons.forEach(b => b.classList.remove('active'));
+            const target = document.getElementById('tab-' + tab);
+            if (target) target.classList.add('active');
+            const btnMap = { profile: 0, about: 1, buy: 2, download: 3 };
+            const idx = btnMap[tab] || 0;
+            if (buttons[idx]) buttons[idx].classList.add('active');
+        }
+
+        function handleLogin() {
+            const username = document.getElementById('loginUsername').value.trim();
+            const password = document.getElementById('loginPassword').value.trim();
+            const errorEl = document.getElementById('loginError');
+            if (!username || !password) {
+                errorEl.textContent = '✕ Fill in all fields';
+                return;
+            }
+            const users = getUsers();
+            if (!users[username]) {
+                errorEl.textContent = '✕ User not found';
+                return;
+            }
+            if (users[username] !== password) {
+                errorEl.textContent = '✕ Wrong password';
+                return;
+            }
+            errorEl.textContent = '';
+            showLoading(true);
+            setTimeout(() => {
+                setCurrentUser(username);
+                showLoading(false);
+                showMainPage(username);
+            }, 1200);
+        }
+
+        function handleRegister() {
+            const username = document.getElementById('regUsername').value.trim();
+            const password = document.getElementById('regPassword').value.trim();
+            const errorEl = document.getElementById('regError');
+            if (!username || !password) {
+                errorEl.textContent = '✕ Fill in all fields';
+                return;
+            }
+            if (username.length < 3) {
+                errorEl.textContent = '✕ Username must be at least 3 characters';
+                return;
+            }
+            if (password.length < 4) {
+                errorEl.textContent = '✕ Password must be at least 4 characters';
+                return;
+            }
+            const users = getUsers();
+            if (users[username]) {
+                errorEl.textContent = '✕ User already exists';
+                return;
+            }
+            users[username] = password;
+            saveUsers(users);
+            errorEl.textContent = '';
+            errorEl.style.color = 'rgba(50, 200, 50, 0.4)';
+            errorEl.textContent = '✓ Account created! Please login.';
+            document.getElementById('regUsername').value = '';
+            document.getElementById('regPassword').value = '';
+            setTimeout(() => {
+                errorEl.style.color = '';
+                errorEl.textContent = '';
+                switchTab('login');
+            }, 1500);
+        }
+
+        function handleLogout() {
+            setCurrentUser(null);
+            showAuthPage();
+            document.getElementById('loginUsername').value = '';
+            document.getElementById('loginPassword').value = '';
+            document.getElementById('loginError').textContent = '';
+        }
+
+        if (!checkAuth()) {
+            showAuthPage();
+        }
+
+        window.switchTab = switchTab;
+        window.switchTabContent = switchTabContent;
+        window.handleLogin = handleLogin;
+        window.handleRegister = handleRegister;
+        window.handleLogout = handleLogout;
+        window.loadAvatar = loadAvatar;
+    </script>
+
+</body>
+</html>
